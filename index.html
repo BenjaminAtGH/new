@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    :root {
+      --green: #2c7a00;
+      --light-green: #b8e986;
+      --bg: #eaf6df;
+      --border: #0e5c00;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg);
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .calculator {
+      background-color: #fff;
+      border: 4px solid var(--border);
+      border-radius: 15px;
+      padding: 20px;
+      width: 320px; /* Mimics phone screen or Windows Calculator size */
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .logo img {
+      width: 70px;
+    }
+
+    .title {
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--green);
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-weight: bold;
+      color: var(--green);
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 2px solid var(--green);
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 48%;
+      padding: 12px;
+      font-size: 16px;
+      margin: 5px 1%;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: var(--green);
+      color: white;
+      font-weight: bold;
+    }
+
+    button.clear {
+      background-color: #d32f2f;
+    }
+
+    .result {
+      margin-top: 10px;
+      padding: 10px;
+      background: var(--light-green);
+      border: 2px solid var(--green);
+      border-radius: 5px;
+      color: #000;
+      text-align: center;
+    }
+	.warning{
+		background-color : #fff59d !important;
+		border : 2px solid orange;
+		color:#000;
+	}
+  </style>
+</head>
+<body>
+
+  <div class="calculator">
+    <div class="logo">
+      <img src="your-image.png" alt="App Icon"> <!-- Use your logo file -->
+    </div>
+    <div class="title">Kalkulator Profil Lipid</div>
+
+    <label for="tc">Kolesterol Total(mg/dL)</label>
+    <input type="number" id="tc" placeholder="e.g., 200">
+
+    <label for="hdl">HDL (mg/dL)</label>
+    <input type="number" id="hdl" placeholder="e.g., 50">
+
+    <label for="tg">Trigliserida (mg/dL)</label>
+    <input type="number" id="tg" placeholder="e.g., 150">
+
+    <label for="ldl">LDL (mg/dL)</label>
+    <input type="number" id="ldl" placeholder="e.g., 100">
+
+    <div>
+      <button onclick="calculate()">Hitung</button>
+      <button class="clear" onclick="clearAll()">Bersihkan</button>
+    </div>
+
+    <div class="result" id="result">Hasil akan muncul disini.</div>
+  </div>
+
+  <script>
+    function calculate() {
+      const tc = parseFloat(document.getElementById('tc').value);
+      const hdl = parseFloat(document.getElementById('hdl').value);
+      const tg = parseFloat(document.getElementById('tg').value);
+      const ldl = parseFloat(document.getElementById('ldl').value);
+      const result = document.getElementById('result');
+	  
+	  result.classList.remove('warning');
+
+      if (isNaN(ldl) && !isNaN(tc) && !isNaN(hdl) && !isNaN(tg)) {
+        const calcLDL = (tc - hdl - (tg / 5)).toFixed(2);
+        result.textContent = `Calculated LDL: ${calcLDL} mg/dL`;
+		if (calcLDL < 40)result.classList.add('warning');
+      } else if (isNaN(tc) && !isNaN(ldl) && !isNaN(hdl) && !isNaN(tg)) {
+        const calcTC = (ldl + hdl + (tg / 5)).toFixed(2);
+        result.textContent = `Calculated Total Cholesterol: ${calcTC} mg/dL`;
+		if (calcTC < 100)result.classList.add('warning');
+      } else if (isNaN(hdl) && !isNaN(ldl) && !isNaN(tc) && !isNaN(tg)) {
+        const calcHDL = (tc - ldl - (tg / 5)).toFixed(2);
+        result.textContent = `Calculated HDL: ${calcHDL} mg/dL`;
+		if (calcHDL < 40)result.classList.add('warning');
+      } else if (isNaN(tg) && !isNaN(ldl) && !isNaN(tc) && !isNaN(hdl)) {
+        const calcTG = ((tc - ldl - hdl) * 5).toFixed(2);
+        result.textContent = `Calculated Triglycerides: ${calcTG} mg/dL`;
+		if (calcHDL < 30)result.classList.add('warning');
+      } else {
+        result.textContent = 'Tinggalkan satu bidang kosong untuk dihitung';
+      }
+    }
+
+    function clearAll() {
+      document.getElementById('tc').value = '';
+      document.getElementById('hdl').value = '';
+      document.getElementById('tg').value = '';
+      document.getElementById('ldl').value = '';
+      const result = document.getElementById('result');
+	  result.textContent = 'Hasil akan muncul disini.';
+	  result.classList.remove('warning');
+    }
+  </script>
+</body>
+</html>
