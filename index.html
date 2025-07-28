@@ -152,6 +152,7 @@
         const calcTG = ((tc - ldl - hdl) * 5).toFixed(2);
         result.textContent = `Calculated Triglycerides: ${calcTG} mg/dL`;
 		if (calcHDL < 30)result.classList.add('warning');
+		if (calcTG > 400)result.classList.add('warning');
       } else {
         result.textContent = 'Tinggalkan satu bidang kosong untuk dihitung';
       }
